@@ -247,7 +247,6 @@ public class DeviceModifyDetailView extends ViewPart implements ISaveablePart {
 
     public void createToolbar(Composite parent) {
     	
-    	Color color = display.getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
         // Create composite Toolbar and set layout
         toolBarComposite = new Composite(parent, SWT.NONE);
         gridLayout = new GridLayout(1, false);

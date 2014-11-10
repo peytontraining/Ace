@@ -2,6 +2,7 @@ package peyton.training.rap.demoSecond.Entites;
 
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
+@Cacheable(true)
 @Table(name = "Machine")
 @NamedQuery(name = "Machine.findAll", query = "SELECT m FROM Machine m")
 public class Machine {

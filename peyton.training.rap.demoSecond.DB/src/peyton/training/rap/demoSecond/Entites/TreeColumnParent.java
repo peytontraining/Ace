@@ -1,7 +1,9 @@
 package peyton.training.rap.demoSecond.Entites;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -10,6 +12,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Cacheable(true)
 @Table(name="treeColumnParent")
 @NamedQuery(name="TreeColumnParent.findAll", query="SELECT t FROM TreeColumnParent t")
 public class TreeColumnParent implements Serializable {

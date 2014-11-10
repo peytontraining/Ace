@@ -19,28 +19,28 @@ import peyton.training.rap.demoSecond.Entites.Type;
  */
 public class TreeViewDAO {
 	
-	EntityManager em = DBConnection.getEntityManager();
+	EntityManager manager = DBConnection.getEntityManager();
 	
         public List<Type> getAllType() {
-            TypedQuery<Type> query = em
+            TypedQuery<Type> query = manager
                     .createNamedQuery("Type.findAll", Type.class);
             List<Type> types = query.getResultList();
-            em.close();
+            manager.close();
             return types;
         }
         
         public List<Device> getAllDevice() {
             TypedQuery<Device> query = 
-                em.createNamedQuery("Device.findAll", Device.class);
+                    manager.createNamedQuery("Device.findAll", Device.class);
             List<Device> devices = query.getResultList();
-            em.close();
+            manager.close();
             return devices;
         }
         
         public void updateMachine(Machine machine) {
-            em.getTransaction().begin();
-            em.merge(machine);
-            em.getTransaction().commit();
-            em.close();
+            manager.getTransaction().begin();
+            manager.merge(machine);
+            manager.getTransaction().commit();
+            manager.close();
         }
 }

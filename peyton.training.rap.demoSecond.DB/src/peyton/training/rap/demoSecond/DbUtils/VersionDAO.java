@@ -3,7 +3,6 @@ package peyton.training.rap.demoSecond.DbUtils;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 
 import peyton.training.rap.demoSecond.Entites.Version;
@@ -16,8 +15,9 @@ import peyton.training.rap.demoSecond.Entites.Version;
 public class VersionDAO {
 
     EntityManager manager = DBConnection.getEntityManager();
-
+    
     public List<Version> getAll() {
+        manager.getEntityManagerFactory().getCache().evictAll();
         TypedQuery<Version> query = manager.createNamedQuery("Version.findAll",
                 Version.class);
         List<Version> version = query.getResultList();
@@ -25,46 +25,31 @@ public class VersionDAO {
         return version;
     }
 
-    // Find ID Version
-    public Version findById(String versionId) {
-        Version version = manager.find(Version.class, versionId);
-        if (version == null) {
-            throw new EntityNotFoundException("Can't find Version for ID "
-                    + versionId);
-        }
-        return version;
-    }
-
     // Update Version
     public void updateVersion(Version version) {
+        manager.getEntityManagerFactory().getCache().evictAll();
         manager.getTransaction().begin();
         manager.merge(version);
         manager.getTransaction().commit();
         manager.close();
     }
-
-    public void AddnewVersion(Version version) {
+    
+    //Add New Version
+    public Version AddnewVersion(Version version) {
+        manager.getEntityManagerFactory().getCache().evictAll();
         manager.getTransaction().begin();
-        manager.persist(version);
-        manager.flush();
-        manager.refresh(version);
+        version = manager.merge(version);
         manager.getTransaction().commit();
-    }
-
-    // Delete Version by ID
-    public void deleteVersionById(Long versionId) {
-        Version version = manager.find(Version.class, versionId);
-        if (versionId != null) {
-            manager.getTransaction().begin();
-            manager.remove(version);
-            manager.getTransaction().commit();
-        }
+        manager.close();
+        return version;
     }
 
     // Delete Version
     public void deleteVersion(Version version) {
+        manager.getEntityManagerFactory().getCache().evictAll();
         manager.getTransaction().begin();
         manager.remove(manager.merge(version));
         manager.getTransaction().commit();
+        manager.close();
     }
 }

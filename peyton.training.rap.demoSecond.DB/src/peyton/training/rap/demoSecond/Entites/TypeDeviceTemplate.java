@@ -1,7 +1,9 @@
 package peyton.training.rap.demoSecond.Entites;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -10,6 +12,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Cacheable(true)
 @Table(name="typeDeviceTemplate")
 @NamedQuery(name="TypeDeviceTemplate.findAll", query="SELECT t FROM TypeDeviceTemplate t")
 public class TypeDeviceTemplate implements Serializable {

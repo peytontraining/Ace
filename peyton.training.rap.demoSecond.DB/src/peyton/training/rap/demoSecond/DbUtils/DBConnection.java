@@ -1,5 +1,6 @@
 package peyton.training.rap.demoSecond.DbUtils;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

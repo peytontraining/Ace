@@ -3,6 +3,7 @@ package peyton.training.rap.demoSecond.Entites;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "devices")
+@Cacheable(true)
 @NamedQuery(name = "Device.findAll", query = "SELECT d FROM Device d")
 public class Device {
 
@@ -54,8 +56,6 @@ public class Device {
     
     private String versionContent;
     
-//    private long icon;
-    
     private String modelNumber;
     
     private String notes;
@@ -77,14 +77,6 @@ public class Device {
     public void setStatus(boolean status) {
         this.status = status;
     }
-/*
-    public long getIcon() {
-        return icon;
-    }
-
-    public void setIcon(long icon) {
-        this.icon = icon;
-    }*/
 
     public String getModelNumber() {
         return modelNumber;

@@ -1,7 +1,6 @@
 package peyton.training.rap.demoSecond.Views;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -57,7 +56,7 @@ public class DeviceTemplatesView extends ViewPart implements
     SimpleDateFormat dateFormat = new SimpleDateFormat(
             "yyyy-MM-dd hh:mm:ss.SSS");
 
-    private TreeViewer treeViewer;
+    public TreeViewer treeViewer;
     
     private Text txtFilter, txtFind;
 
@@ -171,7 +170,6 @@ public class DeviceTemplatesView extends ViewPart implements
 
     @Override
     public void doubleClick(DoubleClickEvent event) {
-        long getDate = new Date().getTime();
         IWorkbenchWindow iWindow = getSite().getWorkbenchWindow();
         
         IWorkbenchPage page = PlatformUI.getWorkbench()
@@ -184,10 +182,11 @@ public class DeviceTemplatesView extends ViewPart implements
         if (firstElement instanceof DeviceTemplate) {
             try {
                 deviceTemplate = (DeviceTemplate) firstElement;
-                iWindow.getActivePage().showView(DeviceTemplatesDetailView.VIEW_ID,String.valueOf(getDate),IWorkbenchPage.VIEW_VISIBLE);
+                int secondaryId = deviceTemplate.getId();
+                iWindow.getActivePage().showView(DeviceTemplatesDetailView.VIEW_ID,String.valueOf(secondaryId),IWorkbenchPage.VIEW_VISIBLE);
                 
                 ((DeviceTemplatesDetailView) page.findViewReference(DeviceTemplatesDetailView.VIEW_ID,
-                        String.valueOf(getDate)).getView(true)).setDataDeviceTemplate((DeviceTemplate) firstElement);
+                        String.valueOf(secondaryId)).getView(true)).setDataDeviceTemplate((DeviceTemplate) firstElement);
                 
             } catch (PartInitException e) {
                 e.printStackTrace();

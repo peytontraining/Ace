@@ -50,7 +50,7 @@ public class TreeViewPart extends ViewPart implements IDoubleClickListener {
         Shell shell = treeviewer.getTree().getShell();
         MessageDialog.openInformation(shell, Constant.TREE_VIEWER, msg);
     }
-
+    
     @Override
     public void setFocus() {
         treeviewer.getControl().setFocus();

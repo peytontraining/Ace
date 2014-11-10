@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -169,7 +170,6 @@ public class NavigationControlView extends ViewPart {
                     } else if (firstElement instanceof Machine) {
                         project = (Machine) firstElement;
                         projectComposite.setVisible(true);
-                        itemProject.setEnabled(false);
                         setDataProject(project);
                         itemProject.setEnabled(false);
                         projectComposite.setVisible(true);
@@ -210,8 +210,9 @@ public class NavigationControlView extends ViewPart {
                     public void run() {
                         if (firstElement != null) {
                             if (firstElement instanceof Machine) {
+                                
                                 Machine project = (Machine) firstElement;
-                                // create New Version
+                                // create New Project
                                 Machine newProject = createNewProject(project);
 
                                 // Create New Version
@@ -220,13 +221,15 @@ public class NavigationControlView extends ViewPart {
                                 List<Version> versions = new ArrayList<>();
                                 versions.add(newVersion);
                                 newProject.setVersions(versions);
-
+                                
                                 // Add new version to project
-                                project.getType().getMachines()
-                                        .add(0, newProject);
-
+                                project.getType().getMachines().add(0, newProject);
+                                
+                                // Focus on the new added project.
+                                tree.treeviewer.setSelection(new StructuredSelection(newProject), true);
+                                
+                                //Refresh TreeView
                                 tree.treeviewer.refresh();
-
                             }
                         }
                     }
@@ -257,7 +260,9 @@ public class NavigationControlView extends ViewPart {
                                 // Add new version to project
                                 version.getMachine().getVersions()
                                         .add(0, newVersion);
-
+                                
+                                tree.treeviewer.setSelection(new StructuredSelection(newVersion), true);
+                                
                                 // Refresh TreeViewer
                                 tree.treeviewer.refresh(project);
 
@@ -268,10 +273,9 @@ public class NavigationControlView extends ViewPart {
                                 String newName = getNewVersionName(version);
 
                                 // Create new version.
-                                Version newVersion = createNewVersion(project,
-                                        newName);
+                                Version newVersion = createNewVersion(project, newName);
 
-                                // Add new version to project pointer.
+                                // Add new version to project
                                 project.getVersions().add(0, newVersion);
 
                                 // Refresh TreeViewer
@@ -295,42 +299,60 @@ public class NavigationControlView extends ViewPart {
 
                     @Override
                     public void run() {
-                        if (element != null) {
-                            if (element instanceof Version) {
-                                VersionDAO vsDao = new VersionDAO();
-                                Version version = (Version) element;
-                                Machine project = version.getMachine();
-                                version.setMachine(project);
-                                Version newVersion = createNewVersion(
-                                        ((Version) element).getMachine(),
-                                        "1.0.29");
+                        Shell shell = window.getShell();
+                        
+                        if ("1.0.0 *".equals(version.getName())) {
+                            MessageDialog.openWarning(window.getShell(),
+                                    "Warning",
+                                    "To change or modify the name of Version");
+                        }else{
+                            MessageDialog dialog = new MessageDialog(shell,
+                                    " Confirm Save As", SAVE_IMAGE,
+                                    "Do you want to clone Version (" + version.getName() + ") ?", MessageDialog.CONFIRM, new String[] {
+                                            "YES", "NO", "CANCEL" }, 0);
+                            int result = dialog.open();
+                            
+                            if (element != null && element instanceof Version) {
+                                if (result == Window.OK) {
+                                    // Declare DAO
+                                    VersionDAO vsDao = new VersionDAO();
 
-                                List<Device> devices = ((Version) element)
-                                        .getDevices();
+                                    // Get Name Of version node
+                                    String getNameVersion = ((Version) element).getName();
+                                    
+                                    // Create New Version Name
+                                    Version newVersion = createNewVersion(
+                                            ((Version) element).getMachine(),
+                                            getNameVersion);
 
-                                List<Device> copyDevices = new ArrayList<>();
+                                    List<Device> devices = ((Version) element)
+                                            .getDevices();
 
-                                // for (Device device : devices) {
-                                // Device d = new Device();
-                                // d.setAppModule("App module");
-                                // d.setId(0);
-                                // d.setDeviceType("Device type");
-                                // d.setManufacture("Manufacture");
-                                // d.setName("Name Device");
-                                // d.setPhysicalLocation("Physical Location");
-                                // d.setVersion(newVersion);
-                                // copyDevices.add(d);
-                                // }
-                                newVersion.setDevices(copyDevices);
-                                version.setDevices(devices);
-                                version.setTargetVersion(version
-                                        .getTargetVersion());
-                                version.setDeploySource(version
-                                        .getDeploySource());
-                                project.getVersions().add(version);
-                                // Insert new version to DB
-                                vsDao.AddnewVersion(version);
-                                tree.treeviewer.refresh(project);
+                                    List<Device> cloneDevices = new ArrayList<>();
+
+                                    for (Device device : devices) {
+                                        Device d = new Device();
+                                        d.setName(device.getName());
+                                        d.setAppModule(device.getAppModule());
+                                        d.setDeviceType(device.getDeviceType());
+                                        d.setPhysicalLocation(device.getPhysicalLocation());
+                                        d.setManufacture(device.getManufacture());
+                                        d.setModelNumber(device.getModelNumber());
+                                        d.setNotes(device.getNotes());
+                                        d.setLastModifield(device.getLastModifield());
+                                        d.setVersion(newVersion);
+                                        d.setVersionContent(device.getVersionContent());
+                                        cloneDevices.add(d);
+                                    }
+                                    newVersion.setDevices(cloneDevices);
+                                    
+                                    // Insert new version to DB
+                                    newVersion = vsDao.AddnewVersion(newVersion);
+                                    newVersion.setMachine(((Version) element).getMachine());
+                                    ((Version) element).getMachine().getVersions().add(0, newVersion);
+                                    tree.treeviewer.refresh(project);
+                                    tree.treeviewer.setSelection(new StructuredSelection(newVersion),true);
+                                }
                             }
                         }
                     }
@@ -364,6 +386,7 @@ public class NavigationControlView extends ViewPart {
                         }
                     }
                 };
+                
                 // Create Action Menu
                 newProjectAction.setText("New Project");
                 newProjectAction.setImageDescriptor(NEW_PROJECT_IMAGE);
@@ -395,21 +418,6 @@ public class NavigationControlView extends ViewPart {
         Menu menu = menuMgr.createContextMenu(tree.treeviewer.getTree());
         tree.treeviewer.getTree().setMenu(menu);
         getSite().registerContextMenu(menuMgr, tree.treeviewer);
-    }
-
-    /*
-     * Initial new version. Set project data for new Version.
-     */
-    private Version createNewVersion(Machine project, String newName) {
-        Version newVersion = new Version();
-        newVersion.setDeploySource("");
-        newVersion.setDeployTime(new Date());
-        newVersion.setDevices(null);
-        newVersion.setName(newName);
-        newVersion.setMachine(project);
-        newVersion.setSaveTime(new Date());
-        newVersion.setTargetVersion("2.x");
-        return newVersion;
     }
 
     private void createVersionForm(Composite parent) {
@@ -494,7 +502,6 @@ public class NavigationControlView extends ViewPart {
             
             @Override
             public void widgetSelected(SelectionEvent e) {
-
                 itemVersion.setEnabled(true);
                 // Get Window
                 Shell shell = window.getShell();
@@ -523,7 +530,6 @@ public class NavigationControlView extends ViewPart {
         txtVersion.addModifyListener(new ModifyListener() {
 
             private static final long serialVersionUID = 1L;
-
             @Override
             public void modifyText(ModifyEvent event) {
                 itemVersion.setEnabled(true);
@@ -663,7 +669,8 @@ public class NavigationControlView extends ViewPart {
         // Set invisible project Composite
         projectComposite.setVisible(false);
     }
-
+    
+    /*Set data for Version*/
     private void setDataVersion(Version version) {
         txtVersion.setText(version.getName());
         txtProject.setText(version.getMachine().getName());
@@ -672,11 +679,26 @@ public class NavigationControlView extends ViewPart {
         txtSaveTime.setText(formatDate.format(version.getSaveTime()));
         txtTargetVersion.setText(version.getTargetVersion());
     }
-
+    
+    /*Set data for Project*/
     private void setDataProject(Machine project) {
         txtName.setText(project.getName());
     }
-
+    
+    /* Display new Version*/
+    private Version createNewVersion(Machine project, String name) {
+        Version newVersion = new Version();
+        newVersion.setDeploySource("");
+        newVersion.setDeployTime(new Date());
+        newVersion.setName(name);
+        newVersion.setMachine(project);
+        newVersion.setSaveTime(new Date());
+        newVersion.setTargetVersion("2.x");
+        newVersion.setId(-1);
+        return newVersion;
+    }
+    
+    /*Create Name of Version */
     private String getNewVersionName(Version version) {
         Version latestVersion = version.getMachine().getVersions().get(0);
         String name = latestVersion.getName().split("\\.")[2];
@@ -685,6 +707,7 @@ public class NavigationControlView extends ViewPart {
         return "1.0.".concat(name).concat(" *");
     }
 
+    /*Create New Project when right click at Project*/
     private Machine createNewProject(Machine machine) {
         Machine newProject = new Machine();
         newProject.setName("UNKNOWN *");

@@ -3,6 +3,7 @@ package peyton.training.rap.demoSecond.Dialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -14,6 +15,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -71,6 +73,14 @@ public class DeviceTemplateDialog extends Dialog {
         treeViewer.setInput(getAllData.getAllTreeColumn());
         treeViewer.setAutoExpandLevel(3);
         
+        // if the tree has only one or zero views, disable the filter text control
+        if (hasAtMostOneView(filterTree.getViewer())) {
+            Text filterText = filterTree.getFilterControl();
+            if (filterText != null) {
+                filterText.setEnabled(false);
+            }
+        }
+        
         //Create TextBox Other
         gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
         toolkit.createLabel(deviceComposite, "Communication Method: ");
@@ -80,6 +90,20 @@ public class DeviceTemplateDialog extends Dialog {
         cbOther.setLayoutData(gridData);
         section.setClient(filterTree);
         return deviceComposite;
+    }
+    
+    private boolean hasAtMostOneView(TreeViewer tree) {
+        ITreeContentProvider contentProvider = (ITreeContentProvider) tree
+                .getContentProvider();
+        Object[] children = contentProvider.getElements(tree.getInput());
+
+        if (children.length <= 1) {
+            if (children.length == 0) {
+                return true;
+            }
+            return !contentProvider.hasChildren(children[0]);
+        }
+        return false;
     }
     
     @Override

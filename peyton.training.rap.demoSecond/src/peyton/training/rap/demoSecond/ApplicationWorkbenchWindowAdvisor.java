@@ -34,18 +34,16 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShellStyle(SWT.NO_TRIM);
 
         IPreferenceStore prefStore = PlatformUI.getPreferenceStore();
-        prefStore.setValue(
-                IWorkbenchPreferenceConstants.SHOW_OPEN_ON_PERSPECTIVE_BAR,
-                false);
-        prefStore.setValue(
-                IWorkbenchPreferenceConstants.PERSPECTIVE_BAR_EXTRAS,
-                Constant.PROJECT_PERPECTIVE + ","
+        prefStore.setValue(IWorkbenchPreferenceConstants.SHOW_OPEN_ON_PERSPECTIVE_BAR, false);
+        prefStore.setValue(IWorkbenchPreferenceConstants.PERSPECTIVE_BAR_EXTRAS,
+                          Constant.PROJECT_PERPECTIVE + ","
                         + Constant.TEMPLATE_PERPECTIVE + ","
                         + Constant.SYSTEM_PERPECTIVE + ","
                         + Constant.USER_PERPECTIVE + ","
                         + Constant.LOGOUT_PERPECTIVE);
     }
-
+    
+    
     @Override
     public void postWindowOpen() {
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()

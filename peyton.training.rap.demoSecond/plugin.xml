@@ -764,43 +764,6 @@
             </command>
          </toolbar>
       </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:peyton.training.rap.demoSecond.Views.DeviceTemplatesDetailView">
-         <toolbar
-               id="peyton.training.rap.demoSecond.Views.deviceTemplateDetail">
-            <command
-                  commandId="org.eclipse.ui.file.save"
-                  icon="icons/save_as.png"
-                  label="Save"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.ui.file.saveAll"
-                  icon="icons/save_and_close.png"
-                  label="Save And Close"
-                  style="push">
-            </command>
-            <command
-                  commandId="peyton.training.rap.demoSecond.command1"
-                  icon="icons/show_devices.png"
-                  label="Camera"
-                  style="push">
-            </command>
-            <command
-                  commandId="peyton.training.rap.demoSecond.command1"
-                  icon="icons/device_changed.png"
-                  label="Devide Changed"
-                  style="push">
-            </command>
-            <command
-                  commandId="peyton.training.rap.demoSecond.command1"
-                  icon="icons/service_edit.png"
-                  label="Service edit"
-                  style="push">
-            </command>
-         </toolbar>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">

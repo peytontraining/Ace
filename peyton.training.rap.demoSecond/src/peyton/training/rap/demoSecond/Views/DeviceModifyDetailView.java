@@ -398,8 +398,7 @@ public class DeviceModifyDetailView extends ViewPart implements ISaveablePart {
         txtName.setText(device.getName());
         txtManufacture.setText(device.getManufacture());
         txtModelNumber.setText(device.getModelNumber());
-        masterTemplate.setText(device.getName() + " "
-                + "Change Device Template");
+        masterTemplate.setText(device.getName() + " " + "Change Device Template");
         txtTypes.setText(device.getDeviceType());
         txtNotes.setText(device.getNotes());
         txtVersion.setText(device.getVersionContent());

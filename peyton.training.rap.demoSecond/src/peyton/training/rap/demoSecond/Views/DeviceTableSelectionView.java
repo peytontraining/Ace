@@ -285,11 +285,12 @@ public class DeviceTableSelectionView extends ViewPart implements
         if (firstElement instanceof Device) {
             try {
                 device = (Device) firstElement;
-                page.showView(viewID, String.valueOf(getDate), IWorkbenchPage.VIEW_ACTIVATE);
-                ((DeviceModifyDetailView) page.findViewReference(viewID, String.valueOf(getDate)).getView(true)).setDataDevice((Device) firstElement);
+                int secondaryId = device.getId();
+                page.showView(viewID, String.valueOf(secondaryId) , IWorkbenchPage.VIEW_ACTIVATE);
+                ((DeviceModifyDetailView) page.
+                        findViewReference(viewID, String.valueOf(secondaryId)).getView(true)).setDataDevice((Device) firstElement);
             } catch (PartInitException e) {
-                System.err.println("COULD NOT FIND " + viewID
-                        + ", with ID # = " + getDate);
+                System.err.println("COULD NOT FIND " + viewID + ", with ID # = " + getDate);
                 e.printStackTrace();
             }
         }

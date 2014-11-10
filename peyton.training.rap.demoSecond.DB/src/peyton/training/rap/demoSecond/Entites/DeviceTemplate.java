@@ -1,7 +1,9 @@
 package peyton.training.rap.demoSecond.Entites;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 /**
@@ -9,6 +11,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
+@Cacheable(true)
 @Table(name = "deviceTemplates")
 @NamedQuery(name = "DeviceTemplate.findAll", query = "SELECT d FROM DeviceTemplate d")
 public class DeviceTemplate implements Serializable {

@@ -3,6 +3,7 @@ package peyton.training.rap.demoSecond.Entites;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
+@Cacheable(true)
 @Table(name = "versions")
 @NamedQuery(name = "Version.findAll", query = "SELECT v FROM Version v")
 public class Version {  

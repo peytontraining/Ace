@@ -1,8 +1,0 @@
-eclipse.preferences.version=1
-repositories/http\:__download.eclipse.org_rt_rap_2.3_SR1-20140909-1638/enabled=true
-repositories/http\:__download.eclipse.org_rt_rap_2.3_SR1-20140909-1638/isSystem=false
-repositories/http\:__download.eclipse.org_rt_rap_2.3_SR1-20140909-1638/name=RAP Runtime
-repositories/http\:__download.eclipse.org_rt_rap_2.3_SR1-20140909-1638/suffix=content.xml
-repositories/http\:__download.eclipse.org_rt_rap_2.3_SR1-20140909-1638/type=org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository
-repositories/http\:__download.eclipse.org_rt_rap_2.3_SR1-20140909-1638/uri=http\://download.eclipse.org/rt/rap/2.3/SR1-20140909-1638/
-repositories/http\:__download.eclipse.org_rt_rap_2.3_SR1-20140909-1638/version=1.0.0

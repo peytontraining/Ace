@@ -1,5 +1,6 @@
 package peyton.training.rap.demoSecond.Views;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.ISaveablePart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -35,7 +37,7 @@ import peyton.training.rap.demoSecond.Common.Constant;
 import peyton.training.rap.demoSecond.DbUtils.DeviceModifyDAO;
 import peyton.training.rap.demoSecond.Entites.DeviceTemplate;
 
-public class DeviceTemplatesDetailView extends ViewPart {
+public class DeviceTemplatesDetailView extends ViewPart implements ISaveablePart{
 
     public static String VIEW_ID = "peyton.training.rap.demoSecond.Views.deviceTemplateDetail";
     private FormToolkit toolkit;
@@ -53,7 +55,10 @@ public class DeviceTemplatesDetailView extends ViewPart {
     private Composite toolBarComposite;
     private ToolBar toolBarDetailItem;
     private GridLayout gridLayout;
-    private ToolItem itemDetail, itemSaveClose, itemDeviceChange, itemShowDevice, itemSetting;;
+    private ToolItem itemDetail, itemSaveClose, itemDeviceChange, itemShowDevice, itemSetting;
+    private boolean isDirty;
+    private boolean saveAsAllowed;
+    private boolean saveNeeded;
     
     /** The Constant DVR_NVR_IMAGE. */
     public static final Image CCTV_IMAGE = AbstractUIPlugin
@@ -157,6 +162,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
             @Override
             public void modifyText(ModifyEvent event) {
                 itemDetail.setEnabled(true);
+                setDirty(true);
             }
         });
         
@@ -178,6 +184,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
             @Override
             public void modifyText(ModifyEvent event) {
                 itemDetail.setEnabled(true);
+                setDirty(true);
             }
         });
 
@@ -221,6 +228,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
             @Override
             public void modifyText(ModifyEvent event) {
                 itemDetail.setEnabled(true);
+                setDirty(true);
             }
         });
         
@@ -271,6 +279,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
                         deviceTemplateView.deviceTemplate.setNote(txtNotes.getText());
                         modifyDao.updateDeviceTemplate(deviceTemplateView.deviceTemplate);
                         itemDetail.setEnabled(false);
+                        setDirty(false);
                     }
                 }
                 
@@ -326,6 +335,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
         lbDeviceDriver.setText(deviceTemplateView.deviceTemplate.getDeviceDriver());
         txtNotes.setText(deviceTemplateView.deviceTemplate.getNote());
         itemDetail.setEnabled(false);
+        setDirty(false);
     }
     
     /* Change Title Name View Part - Start */
@@ -348,7 +358,40 @@ public class DeviceTemplatesDetailView extends ViewPart {
     @Override
     public void setFocus() {
     }
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+    }
 
+    @Override
+    public void doSaveAs() {
+    }
+
+    @Override
+    public boolean isDirty() {
+        return isDirty;
+    }
+
+    @Override
+    public boolean isSaveOnCloseNeeded() {
+        return saveNeeded;
+    }
+
+    public boolean isSaveAsAllowed() {
+        return saveAsAllowed;
+    }
+
+    public void setDirty(boolean isDirty) {
+        this.isDirty = isDirty;
+        firePropertyChange(PROP_DIRTY);
+    }
+
+    public void setSaveAsAllowed(boolean isSaveAsAllowed) {
+        this.saveAsAllowed = isSaveAsAllowed;
+    }
+
+    public void setSaveNeeded(boolean isSaveOnCloseNeeded) {
+        this.saveNeeded = isSaveOnCloseNeeded;
+    }
     public Section getSection() {
         return section;
     }

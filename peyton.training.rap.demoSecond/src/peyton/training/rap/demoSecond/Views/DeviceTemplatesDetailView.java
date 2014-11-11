@@ -53,7 +53,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
     private Composite toolBarComposite;
     private ToolBar toolBarDetailItem;
     private GridLayout gridLayout;
-    private ToolItem itemDetail,itemSaveClose, itemDeviceChange, itemShowDevice, itemSetting;;
+    private ToolItem itemDetail, itemSaveClose, itemDeviceChange, itemShowDevice, itemSetting;;
     
     /** The Constant DVR_NVR_IMAGE. */
     public static final Image CCTV_IMAGE = AbstractUIPlugin
@@ -87,7 +87,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
         // Get Section from Device Table And active Page
         IWorkbenchWindow window = getSite().getWorkbenchWindow();
         window.getActivePage();
-
+        
         //Create Toolbar
         createToolbar(parent);
         
@@ -112,7 +112,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
         // Get Section from Device Template And active Page
         IWorkbenchWindow window = getSite().getWorkbenchWindow();
         window.getActivePage();
-
+        
         //Create Color
         Color grayColor = display.getSystemColor(SWT.COLOR_GRAY);
         
@@ -150,6 +150,15 @@ public class DeviceTemplatesDetailView extends ViewPart {
         toolkit.createLabel(scrollForm.getBody(), "Name:");
         txtName = toolkit.createText(scrollForm.getBody(), "");
         txtName.setLayoutData(layoutData);
+        txtName.addModifyListener(new ModifyListener() {
+            
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void modifyText(ModifyEvent event) {
+                itemDetail.setEnabled(true);
+            }
+        });
         
         //Create text manufacture
         toolkit.createLabel(scrollForm.getBody(), "Manufacturer:");
@@ -162,6 +171,15 @@ public class DeviceTemplatesDetailView extends ViewPart {
         toolkit.createLabel(scrollForm.getBody(), "Model Number:");
         txtModelNum = toolkit.createText(scrollForm.getBody(), "");
         txtModelNum.setLayoutData(layoutData);
+        txtModelNum.addModifyListener(new ModifyListener() {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void modifyText(ModifyEvent event) {
+                itemDetail.setEnabled(true);
+            }
+        });
 
         //Create text Types
         toolkit.createLabel(scrollForm.getBody(), "Types:");
@@ -197,6 +215,14 @@ public class DeviceTemplatesDetailView extends ViewPart {
         txtNotes = toolkit.createText(scrollForm.getBody(), "", SWT.MULTI);
         layoutData.heightHint = txtNotes.getLineHeight() * 5;
         txtNotes.setLayoutData(layoutData);
+        txtNotes.addModifyListener(new ModifyListener() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void modifyText(ModifyEvent event) {
+                itemDetail.setEnabled(true);
+            }
+        });
         
         //Set scroll Form to tab Item
         tbDetailItem.setControl(scrollForm);
@@ -219,10 +245,9 @@ public class DeviceTemplatesDetailView extends ViewPart {
         toolBarDetailItem.setLayoutData(gridData);
 
         // Create Item Save
-        final ToolItem itemDetail = new ToolItem(toolBarDetailItem, SWT.PUSH);
+        itemDetail = new ToolItem(toolBarDetailItem, SWT.PUSH);
         itemDetail.setImage(SAVE_IMAGE);
         itemDetail.setToolTipText("Save (Ctrl + S)");
-//        itemDetail.setEnabled(false);
         itemDetail.addSelectionListener(new SelectionAdapter() {
             private static final long serialVersionUID = -102212312093090431L;
 
@@ -245,7 +270,7 @@ public class DeviceTemplatesDetailView extends ViewPart {
                         deviceTemplateView.deviceTemplate.setModelNumber(txtModelNum.getText());
                         deviceTemplateView.deviceTemplate.setNote(txtNotes.getText());
                         modifyDao.updateDeviceTemplate(deviceTemplateView.deviceTemplate);
-                        // itemDetail.setEnabled(false);
+                        itemDetail.setEnabled(false);
                     }
                 }
                 
@@ -294,12 +319,13 @@ public class DeviceTemplatesDetailView extends ViewPart {
     
     public void setDataDeviceTemplate(DeviceTemplate deviceTemplate) {
         lbIcon.setImage(CCTV_IMAGE);
-        txtName.setText(deviceTemplate.getName());
-        txtManufact.setText(deviceTemplate.getManufacturer());
-        txtModelNum.setText(deviceTemplate.getModelNumber());
-        lbTypes.setText(deviceTemplate.getTypeDeviceTemplate().getName());
-        lbDeviceDriver.setText(deviceTemplate.getDeviceDriver());
-        txtNotes.setText(deviceTemplate.getNote());
+        txtName.setText(deviceTemplateView.deviceTemplate.getName());
+        txtManufact.setText(deviceTemplateView.deviceTemplate.getManufacturer());
+        txtModelNum.setText(deviceTemplateView.deviceTemplate.getModelNumber());
+        lbTypes.setText(deviceTemplateView.deviceTemplate.getTypeDeviceTemplate().getName());
+        lbDeviceDriver.setText(deviceTemplateView.deviceTemplate.getDeviceDriver());
+        txtNotes.setText(deviceTemplateView.deviceTemplate.getNote());
+        itemDetail.setEnabled(false);
     }
     
     /* Change Title Name View Part - Start */

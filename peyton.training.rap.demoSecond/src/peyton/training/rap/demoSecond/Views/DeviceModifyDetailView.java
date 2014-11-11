@@ -265,7 +265,6 @@ public class DeviceModifyDetailView extends ViewPart implements ISaveablePart {
         itemDetail = new ToolItem(toolBarDetailItem, SWT.PUSH);
         itemDetail.setImage(SAVE_IMAGE);
         itemDetail.setToolTipText("Save (Ctrl + S)");
-        itemDetail.setEnabled(false);
         itemDetail.addSelectionListener(new SelectionAdapter() {
             private static final long serialVersionUID = -102212312093090431L;
 
@@ -403,6 +402,8 @@ public class DeviceModifyDetailView extends ViewPart implements ISaveablePart {
         txtNotes.setText(device.getNotes());
         txtVersion.setText(device.getVersionContent());
         txtLastModifield.setText(formatDate.format(device.getLastModifield()));
+        itemDetail.setEnabled(false);
+        setDirty(false);
     }
     
     /* Change Title Name View Part - Start */

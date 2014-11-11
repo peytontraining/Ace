@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -318,7 +320,9 @@ public class NavigationControlView extends ViewPart {
                                     VersionDAO vsDao = new VersionDAO();
 
                                     // Get Name Of version node
-                                    String getNameVersion = ((Version) element).getName();
+//                                    String getNameVersion = ((Version) element).getName();
+                                    
+                                    String getNameVersion = getVersionNameSaveAs(version);
                                     
                                     // Create New Version Name
                                     Version newVersion = createNewVersion(
@@ -700,13 +704,35 @@ public class NavigationControlView extends ViewPart {
     
     /*Create Name of Version */
     private String getNewVersionName(Version version) {
+        
         Version latestVersion = version.getMachine().getVersions().get(0);
-        String name = latestVersion.getName().split("\\.")[2];
-        int number = Integer.valueOf(name);
-        name = String.valueOf(++number);
-        return "1.0.".concat(name).concat(" *");
+        String[] parts1 = latestVersion.getName().split("\\.");
+        String namePart2 = parts1[2];
+        int index = Integer.valueOf(namePart2);
+        namePart2 = String.valueOf(++index);
+        
+        String[] parts2 = latestVersion.getName().split("\\.");
+        String namepart0 = parts2[0];
+        String namepart1 = parts2[1];
+        
+        return namepart0 + ".".concat(namepart1) + ".".concat(namePart2).concat(" *");
     }
 
+    private String getVersionNameSaveAs(Version version) {
+        
+        Version latestVersion = version.getMachine().getVersions().get(0);
+        String[] parts1 = latestVersion.getName().split("\\.");
+        String namePart2 = parts1[2];
+        int index = Integer.valueOf(namePart2);
+        namePart2 = String.valueOf(++index);
+        
+        String[] parts2 = latestVersion.getName().split("\\.");
+        String namepart0 = parts2[0];
+        String namepart1 = parts2[1];
+        
+        return namepart0 + ".".concat(namepart1) + ".".concat(namePart2);
+    }
+    
     /*Create New Project when right click at Project*/
     private Machine createNewProject(Machine machine) {
         Machine newProject = new Machine();

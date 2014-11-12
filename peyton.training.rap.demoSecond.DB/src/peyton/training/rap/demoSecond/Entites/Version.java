@@ -49,15 +49,15 @@ public class Version {
     private List<Device> devices;
     
     @ManyToOne(cascade = {CascadeType.PERSIST} )
-    @JoinColumn(name="idMachine")
-    private Machine machine;
+    @JoinColumn(name="idProject")
+    private Project project;
     
-    public Machine getMachine() {
-        return machine;
+    public Project getProject() {
+        return project;
     }
 
-    public void setMachine(Machine machine) {
-        this.machine = machine;
+    public void setProject(Project project) {
+        this.project = project;
     }
     public Version() {
     }

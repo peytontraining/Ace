@@ -36,7 +36,7 @@ public class Type{
 	/** The machines. */
 	@OneToMany(mappedBy="type",cascade={CascadeType.PERSIST})
 	@OrderBy(value = "id DESC")
-	private List<Machine> machines;
+	private List<Project> machines;
 
 	/**
 	 * Instantiates a new type.
@@ -65,7 +65,7 @@ public class Type{
 	 *
 	 * @return the machines
 	 */
-	public List<Machine> getMachines() {
+	public List<Project> getMachines() {
 		return this.machines;
 	}
 
@@ -74,7 +74,7 @@ public class Type{
 	 *
 	 * @param machines the new machines
 	 */
-	public void setMachines(List<Machine> machines) {
+	public void setMachines(List<Project> machines) {
 		this.machines = machines;
 	}
 
@@ -84,7 +84,7 @@ public class Type{
 	 * @param machines the machines
 	 * @return the machine
 	 */
-	public Machine addMachine(Machine machines) {
+	public Project addMachine(Project machines) {
 		getMachines().add(machines);
 		machines.setType(this);
 
@@ -97,7 +97,7 @@ public class Type{
 	 * @param machines the machines
 	 * @return the machine
 	 */
-	public Machine removeMachine(Machine machines) {
+	public Project removeMachine(Project machines) {
 		getMachines().remove(machines);
 		machines.setType(null);
 

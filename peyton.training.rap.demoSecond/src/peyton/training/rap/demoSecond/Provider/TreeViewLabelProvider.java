@@ -5,7 +5,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import peyton.training.rap.demoSecond.Common.Constant;
-import peyton.training.rap.demoSecond.Entites.Machine;
+import peyton.training.rap.demoSecond.Entites.Project;
 import peyton.training.rap.demoSecond.Entites.Type;
 import peyton.training.rap.demoSecond.Entites.Version;
 
@@ -31,7 +31,7 @@ public class TreeViewLabelProvider extends LabelProvider {
     public Image getImage(Object element) {
         if (element instanceof Type) {
             return TYPE_IMAGE;
-        } else if (element instanceof Machine) {
+        } else if (element instanceof Project) {
             return MACHINE_IMAGE;
         } else if (element instanceof Version) {
             return VERSION_IMAGES;
@@ -43,8 +43,8 @@ public class TreeViewLabelProvider extends LabelProvider {
     public String getText(Object element) {
         if (element instanceof Type) {
             return ((Type) element).getName();
-        } else if (element instanceof Machine) {
-            return ((Machine) element).getName();
+        } else if (element instanceof Project) {
+            return ((Project) element).getName();
         } else if (element instanceof Version) {
             return ((Version) element).getName();
         }

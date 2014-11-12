@@ -179,4 +179,7 @@ public interface Constant {
     /** The Constant PROJECT_PERPECTIVE */
     public static final String LOGOUT_PERPECTIVE = "peyton.training.rap.demoSecond.logout";
 
+    /** NUMBER */
+    public static final int ZERO = -1; 
+
 }

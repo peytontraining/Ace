@@ -23,16 +23,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Cacheable(true)
-@Table(name = "Machine")
-@NamedQuery(name = "Machine.findAll", query = "SELECT m FROM Machine m")
-public class Machine {
+@Table(name = "Project")
+@NamedQuery(name = "Project.findAll", query = "SELECT m FROM Project m")
+public class Project {
 
     /** The id machine. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    /** The name machine. */
+    /** The name project. */
     private String name;
 
     public int getId() {
@@ -55,14 +55,14 @@ public class Machine {
     @JoinColumn(name = "idType")
     private Type type;
 
-    @OneToMany(mappedBy = "machine", cascade={CascadeType.PERSIST})
+    @OneToMany(mappedBy = "project", cascade={CascadeType.PERSIST})
     @OrderBy(value = "id DESC")
     private List<Version> versions;
 
     /**
      * Instantiates a new machine.
      */
-    public Machine() {
+    public Project() {
     }
 
     /**
@@ -109,7 +109,7 @@ public class Machine {
      */
     public Version addVersion(Version version) {
         getVersions().add(version);
-        version.setMachine(this);
+        version.setProject(this);
         return version;
     }
 
@@ -121,7 +121,7 @@ public class Machine {
      */
     public Version removeVersion(Version version) {
         getVersions().remove(version);
-        version.setMachine(null);
+        version.setProject(null);
         return version;
     }
 

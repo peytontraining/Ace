@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import peyton.training.rap.demoSecond.Entites.Device;
-import peyton.training.rap.demoSecond.Entites.Machine;
+import peyton.training.rap.demoSecond.Entites.Project;
 import peyton.training.rap.demoSecond.Entites.Type;
 
 /**
@@ -37,10 +37,11 @@ public class TreeViewDAO {
             return devices;
         }
         
-        public void updateMachine(Machine machine) {
+        public Project updateMachine(Project machine) {
             manager.getTransaction().begin();
-            manager.merge(machine);
+            machine = manager.merge(machine);
             manager.getTransaction().commit();
             manager.close();
+            return machine;
         }
 }

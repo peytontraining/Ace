@@ -15,7 +15,7 @@ import peyton.training.rap.demoSecond.Entites.Version;
 public class VersionDAO {
 
     EntityManager manager = DBConnection.getEntityManager();
-    
+
     public List<Version> getAll() {
         manager.getEntityManagerFactory().getCache().evictAll();
         TypedQuery<Version> query = manager.createNamedQuery("Version.findAll",
@@ -26,15 +26,16 @@ public class VersionDAO {
     }
 
     // Update Version
-    public void updateVersion(Version version) {
+    public Version updateVersion(Version version) {
         manager.getEntityManagerFactory().getCache().evictAll();
         manager.getTransaction().begin();
-        manager.merge(version);
+        version = manager.merge(version);
         manager.getTransaction().commit();
         manager.close();
+        return version;
     }
-    
-    //Add New Version
+
+    // Add New Version
     public Version AddnewVersion(Version version) {
         manager.getEntityManagerFactory().getCache().evictAll();
         manager.getTransaction().begin();
@@ -45,11 +46,12 @@ public class VersionDAO {
     }
 
     // Delete Version
-    public void deleteVersion(Version version) {
+    public Version deleteVersion(Version version) {
         manager.getEntityManagerFactory().getCache().evictAll();
         manager.getTransaction().begin();
         manager.remove(manager.merge(version));
         manager.getTransaction().commit();
         manager.close();
+        return version;
     }
 }

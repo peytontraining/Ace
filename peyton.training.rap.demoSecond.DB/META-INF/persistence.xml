@@ -9,7 +9,7 @@
 		<class>peyton.training.rap.demoSecond.Entites.TypeDeviceTemplate</class>
 		<class>peyton.training.rap.demoSecond.Entites.Device</class>
 		<class>peyton.training.rap.demoSecond.Entites.Type</class>
-		<class>peyton.training.rap.demoSecond.Entites.Machine</class>
+		<class>peyton.training.rap.demoSecond.Entites.Project</class>
 		<class>peyton.training.rap.demoSecond.Entites.Version</class>
 		<class>peyton.training.rap.demoSecond.Entites.DeviceTableDetail</class>
 		
